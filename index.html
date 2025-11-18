@@ -88,19 +88,22 @@
             </div>
 
             <div class="card-container">
-                <a href="images/comedia1.jpg" class="card" data-category="comedias" data-image="images/comedia1.jpg"
+                <a href="images/comedia1.jpg" class="card" data-category="comedias" data-category-title="Comédia romântica"
+                    data-image="images/comedia1.jpg"
                     data-caption="Fomos caminhar e paramos no bar.">
                     <img src="images/comedia1.jpg" alt="Foto engraçada 1">
                     <p>Fomos caminhar e paramos no bar.</p>
                 </a>
 
-                <a href="images/comedia2.jpg" class="card" data-category="comedias" data-image="images/comedia2.jpg"
+                <a href="images/comedia2.jpg" class="card" data-category="comedias" data-category-title="Comédia romântica"
+                    data-image="images/comedia2.jpg"
                     data-caption="Um faz pose, o outro tenta. Adivinha quem é quem?">
                     <img src="images/comedia2.jpg" alt="Foto engraçada 2">
                     <p>Um faz pose, o outro tenta. Adivinha quem é quem?</p>
                 </a>
 
-                <a href="images/comedia3.jpg" class="card" data-category="comedias" data-image="images/comedia3.jpg"
+                <a href="images/comedia3.jpg" class="card" data-category="comedias" data-category-title="Comédia romântica"
+                    data-image="images/comedia3.jpg"
                     data-caption="Praia sem chuva? Não tem graça.">
                     <img src="images/comedia3.jpg" alt="Foto engraçada 3">
                     <p>Práia sem chuva? Não tem graça.</p>
@@ -122,19 +125,22 @@
             </div>
 
             <div class="card-container">
-                <a href="images/romance1.jpg" class="card" data-category="romance" data-image="images/romance1.jpg"
+                <a href="images/romance1.jpg" class="card" data-category="romance" data-category-title="Romance épico"
+                    data-image="images/romance1.jpg"
                     data-caption="Nosso piloto (primeiros encontros)">
                     <img src="images/romance1.jpg" alt="Foto fofa 1">
                     <p>Nosso piloto (primeiros encontros)</p>
                 </a>
 
-                <a href="images/romance2.jpg" class="card" data-category="romance" data-image="images/romance2.jpg"
+                <a href="images/romance2.jpg" class="card" data-category="romance" data-category-title="Romance épico"
+                    data-image="images/romance2.jpg"
                     data-caption="Plot twist: bilhete surpresa">
                     <img src="images/romance2.jpg" alt="Foto fofa 2">
                     <p>Plot twist: bilhete surpresa</p>
                 </a>
 
-                <a href="images/romance3.jpg" class="card" data-category="romance" data-image="images/romance3.jpg"
+                <a href="images/romance3.jpg" class="card" data-category="romance" data-category-title="Romance épico"
+                    data-image="images/romance3.jpg"
                     data-caption="Episódio musical: nossa playlist">
                     <img src="images/romance3.jpg" alt="Foto fofa 3">
                     <p>Episódio musical: nossa playlist</p>
@@ -156,19 +162,22 @@
             </div>
 
             <div class="card-container">
-                <a href="images/viagem1.jpg" class="card" data-category="aventura" data-image="images/viagem1.jpg"
+                <a href="images/viagem1.jpg" class="card" data-category="aventura" data-category-title="Ação &amp; Aventura"
+                    data-image="images/viagem1.jpg"
                     data-caption="Aquela viagem para a praia">
                     <img src="images/viagem1.jpg" alt="Viagem 1">
                     <p>Aquela viagem para a praia</p>
                 </a>
 
-                <a href="images/passeio1.jpg" class="card" data-category="aventura" data-image="images/passeio1.jpg"
+                <a href="images/passeio1.jpg" class="card" data-category="aventura" data-category-title="Ação &amp; Aventura"
+                    data-image="images/passeio1.jpg"
                     data-caption="Rolê aleatório que virou história">
                     <img src="images/passeio1.jpg" alt="Passeio 1">
                     <p>Rolê aleatório que virou história</p>
                 </a>
 
-                <a href="images/aventura3.jpg" class="card" data-category="aventura" data-image="images/aventura3.jpg"
+                <a href="images/aventura3.jpg" class="card" data-category="aventura" data-category-title="Ação &amp; Aventura"
+                    data-image="images/aventura3.jpg"
                     data-caption="Missão secreta: preparar a surpresa">
                     <img src="images/aventura3.jpg" alt="Passeio 2">
                     <p>Missão secreta: preparar a surpresa</p>
@@ -224,6 +233,7 @@
             <button class="image-modal__nav image-modal__nav--next" type="button" aria-label="Ver próxima foto">
                 &#10095;
             </button>
+            <p class="image-modal__category" id="image-modal-category"></p>
             <img src="" alt="" class="image-modal__image">
             <p class="image-modal__caption" id="image-modal-caption"></p>
         </div>
@@ -239,6 +249,7 @@
 
             const modalImage = modal.querySelector('.image-modal__image');
             const modalCaption = modal.querySelector('.image-modal__caption');
+            const categoryLabel = modal.querySelector('.image-modal__category');
             const closeButton = modal.querySelector('.image-modal__close');
             const overlay = modal.querySelector('.image-modal__overlay');
             const prevButton = modal.querySelector('.image-modal__nav--prev');
@@ -251,15 +262,29 @@
             const getCardCategory = (card) =>
                 card?.dataset?.category || card?.closest('section')?.id || '';
 
+            const updateNavVisibility = () => {
+                if (!prevButton || !nextButton) return;
+                const singleImage = activeCards.length <= 1;
+                const atStart = currentIndex <= 0;
+                const atEnd = currentIndex >= activeCards.length - 1;
+                prevButton.hidden = singleImage || atStart;
+                nextButton.hidden = singleImage || atEnd;
+            };
+
             const updateImage = (index) => {
                 const card = activeCards[index];
                 if (!card) return;
                 currentIndex = index;
-                const { image, caption } = card.dataset;
+                const { image, caption, categoryTitle } = card.dataset;
                 const altText = card.querySelector('img')?.alt || caption || '';
                 modalImage.src = image;
                 modalImage.alt = altText;
                 modalCaption.textContent = caption || '';
+                if (categoryLabel) {
+                    categoryLabel.textContent = categoryTitle || '';
+                    categoryLabel.hidden = !categoryTitle;
+                }
+                updateNavVisibility();
             };
 
             const openModalForCard = (card) => {
@@ -293,7 +318,8 @@
 
             const changeImage = (step) => {
                 if (currentIndex === -1 || !activeCards.length) return;
-                const newIndex = (currentIndex + step + activeCards.length) % activeCards.length;
+                const newIndex = currentIndex + step;
+                if (newIndex < 0 || newIndex >= activeCards.length) return;
                 updateImage(newIndex);
             };
 

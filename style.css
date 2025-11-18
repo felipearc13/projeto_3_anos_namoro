@@ -473,6 +473,15 @@ footer {
     text-align: center;
 }
 
+.image-modal__category {
+    margin: 0 0 12px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 0.9rem;
+    color: var(--netflix-red-light);
+    text-align: center;
+}
+
 .image-modal__close {
     position: absolute;
     top: 12px;
