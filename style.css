@@ -108,6 +108,19 @@ a {
     color: rgba(255, 255, 255, 0.85);
 }
 
+.material-icons-outlined {
+    font-family: 'Material Icons Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: inherit;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: none;
+    letter-spacing: normal;
+    line-height: 1;
+}
+
 .top-nav nav a .label {
     line-height: 1;
 }
