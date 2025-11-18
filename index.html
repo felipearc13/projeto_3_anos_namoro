@@ -88,19 +88,19 @@
             </div>
 
             <div class="card-container">
-                <a href="images/comedia1.jpg" class="card" data-image="images/comedia1.jpg"
+                <a href="images/comedia1.jpg" class="card" data-category="comedias" data-image="images/comedia1.jpg"
                     data-caption="Fomos caminhar e paramos no bar.">
                     <img src="images/comedia1.jpg" alt="Foto engraçada 1">
                     <p>Fomos caminhar e paramos no bar.</p>
                 </a>
 
-                <a href="images/comedia2.jpg" class="card" data-image="images/comedia2.jpg"
+                <a href="images/comedia2.jpg" class="card" data-category="comedias" data-image="images/comedia2.jpg"
                     data-caption="Um faz pose, o outro tenta. Adivinha quem é quem?">
                     <img src="images/comedia2.jpg" alt="Foto engraçada 2">
                     <p>Um faz pose, o outro tenta. Adivinha quem é quem?</p>
                 </a>
 
-                <a href="images/comedia3.jpg" class="card" data-image="images/comedia3.jpg"
+                <a href="images/comedia3.jpg" class="card" data-category="comedias" data-image="images/comedia3.jpg"
                     data-caption="Praia sem chuva? Não tem graça.">
                     <img src="images/comedia3.jpg" alt="Foto engraçada 3">
                     <p>Práia sem chuva? Não tem graça.</p>
@@ -122,19 +122,19 @@
             </div>
 
             <div class="card-container">
-                <a href="images/romance1.jpg" class="card" data-image="images/romance1.jpg"
+                <a href="images/romance1.jpg" class="card" data-category="romance" data-image="images/romance1.jpg"
                     data-caption="Nosso piloto (primeiros encontros)">
                     <img src="images/romance1.jpg" alt="Foto fofa 1">
                     <p>Nosso piloto (primeiros encontros)</p>
                 </a>
 
-                <a href="images/romance2.jpg" class="card" data-image="images/romance2.jpg"
+                <a href="images/romance2.jpg" class="card" data-category="romance" data-image="images/romance2.jpg"
                     data-caption="Plot twist: bilhete surpresa">
                     <img src="images/romance2.jpg" alt="Foto fofa 2">
                     <p>Plot twist: bilhete surpresa</p>
                 </a>
 
-                <a href="images/romance3.jpg" class="card" data-image="images/romance3.jpg"
+                <a href="images/romance3.jpg" class="card" data-category="romance" data-image="images/romance3.jpg"
                     data-caption="Episódio musical: nossa playlist">
                     <img src="images/romance3.jpg" alt="Foto fofa 3">
                     <p>Episódio musical: nossa playlist</p>
@@ -156,19 +156,19 @@
             </div>
 
             <div class="card-container">
-                <a href="images/viagem1.jpg" class="card" data-image="images/viagem1.jpg"
+                <a href="images/viagem1.jpg" class="card" data-category="aventura" data-image="images/viagem1.jpg"
                     data-caption="Aquela viagem para a praia">
                     <img src="images/viagem1.jpg" alt="Viagem 1">
                     <p>Aquela viagem para a praia</p>
                 </a>
 
-                <a href="images/passeio1.jpg" class="card" data-image="images/passeio1.jpg"
+                <a href="images/passeio1.jpg" class="card" data-category="aventura" data-image="images/passeio1.jpg"
                     data-caption="Rolê aleatório que virou história">
                     <img src="images/passeio1.jpg" alt="Passeio 1">
                     <p>Rolê aleatório que virou história</p>
                 </a>
 
-                <a href="images/aventura3.jpg" class="card" data-image="images/aventura3.jpg"
+                <a href="images/aventura3.jpg" class="card" data-category="aventura" data-image="images/aventura3.jpg"
                     data-caption="Missão secreta: preparar a surpresa">
                     <img src="images/aventura3.jpg" alt="Passeio 2">
                     <p>Missão secreta: preparar a surpresa</p>
@@ -229,7 +229,7 @@
         </div>
     </div>
     <footer>
-        <p>Feito com ❤️ para minha gatinha 💕 <br><br> <b>LOVEFLIX+</b> Originals</p>
+        <p>Feito com ❤️ para minha gatinha 🐱 <br><br> <b>LOVEFLIX+</b> Originals</p>
     </footer>
 
     <script>
@@ -246,9 +246,13 @@
             const cards = Array.from(document.querySelectorAll('.card[data-image]'));
             let lastFocusedElement = null;
             let currentIndex = -1;
+            let activeCards = [];
+
+            const getCardCategory = (card) =>
+                card?.dataset?.category || card?.closest('section')?.id || '';
 
             const updateImage = (index) => {
-                const card = cards[index];
+                const card = activeCards[index];
                 if (!card) return;
                 currentIndex = index;
                 const { image, caption } = card.dataset;
@@ -258,13 +262,20 @@
                 modalCaption.textContent = caption || '';
             };
 
-            const openModalAt = (index) => {
-                if (!cards.length) return;
+            const openModalForCard = (card) => {
+                if (!card) return;
+                const category = getCardCategory(card);
+                activeCards = category
+                    ? cards.filter((item) => getCardCategory(item) === category)
+                    : [card];
+                const startIndex = activeCards.indexOf(card);
+                if (!activeCards.length) return;
+
                 lastFocusedElement = document.activeElement;
                 modal.setAttribute('data-open', 'true');
                 modal.removeAttribute('aria-hidden');
                 document.body.classList.add('modal-open');
-                updateImage(index);
+                updateImage(startIndex === -1 ? 0 : startIndex);
                 closeButton.focus();
             };
 
@@ -274,21 +285,22 @@
                 modalImage.removeAttribute('src');
                 document.body.classList.remove('modal-open');
                 currentIndex = -1;
+                activeCards = [];
                 if (lastFocusedElement) {
                     lastFocusedElement.focus();
                 }
             };
 
             const changeImage = (step) => {
-                if (currentIndex === -1 || !cards.length) return;
-                const newIndex = (currentIndex + step + cards.length) % cards.length;
+                if (currentIndex === -1 || !activeCards.length) return;
+                const newIndex = (currentIndex + step + activeCards.length) % activeCards.length;
                 updateImage(newIndex);
             };
 
-            cards.forEach((trigger, index) => {
+            cards.forEach((trigger) => {
                 trigger.addEventListener('click', (event) => {
                     event.preventDefault();
-                    openModalAt(index);
+                    openModalForCard(trigger);
                 });
             });
 
