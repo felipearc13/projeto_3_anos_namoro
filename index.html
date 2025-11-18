@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
@@ -72,7 +72,7 @@
                     title="COSTA RICA IN 4K 60fps HDR (ULTRA HD)" frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                <p class="video-caption">Trailer oficial da nossa série particular 💘</p>
+                <p class="video-caption">Trailer oficial da nossa série particular 💞</p>
             </div>
         </div>
     </section>
@@ -88,17 +88,20 @@
             </div>
 
             <div class="card-container">
-                <a href="images/comedia1.jpg" target="_blank" rel="noopener noreferrer" class="card">
+                <a href="images/comedia1.jpg" class="card" data-image="images/comedia1.jpg"
+                    data-caption="Fomos caminhar e paramos no bar.">
                     <img src="images/comedia1.jpg" alt="Foto engraçada 1">
                     <p>Fomos caminhar e paramos no bar.</p>
                 </a>
 
-                <a href="images/comedia2.jpg" target="_blank" rel="noopener noreferrer" class="card">
+                <a href="images/comedia2.jpg" class="card" data-image="images/comedia2.jpg"
+                    data-caption="Um faz pose, o outro tenta. Adivinha quem é quem?">
                     <img src="images/comedia2.jpg" alt="Foto engraçada 2">
                     <p>Um faz pose, o outro tenta. Adivinha quem é quem?</p>
                 </a>
 
-                <a href="images/comedia3.jpg" target="_blank" rel="noopener noreferrer" class="card">
+                <a href="images/comedia3.jpg" class="card" data-image="images/comedia3.jpg"
+                    data-caption="Praia sem chuva? Não tem graça.">
                     <img src="images/comedia3.jpg" alt="Foto engraçada 3">
                     <p>Práia sem chuva? Não tem graça.</p>
                 </a>
@@ -119,17 +122,20 @@
             </div>
 
             <div class="card-container">
-                <a href="images/romance1.jpg" target="_blank" rel="noopener noreferrer" class="card">
+                <a href="images/romance1.jpg" class="card" data-image="images/romance1.jpg"
+                    data-caption="Nosso piloto (primeiros encontros)">
                     <img src="images/romance1.jpg" alt="Foto fofa 1">
                     <p>Nosso piloto (primeiros encontros)</p>
                 </a>
 
-                <a href="images/romance2.jpg" target="_blank" rel="noopener noreferrer" class="card">
+                <a href="images/romance2.jpg" class="card" data-image="images/romance2.jpg"
+                    data-caption="Plot twist: bilhete surpresa">
                     <img src="images/romance2.jpg" alt="Foto fofa 2">
                     <p>Plot twist: bilhete surpresa</p>
                 </a>
 
-                <a href="images/romance3.jpg" target="_blank" rel="noopener noreferrer" class="card">
+                <a href="images/romance3.jpg" class="card" data-image="images/romance3.jpg"
+                    data-caption="Episódio musical: nossa playlist">
                     <img src="images/romance3.jpg" alt="Foto fofa 3">
                     <p>Episódio musical: nossa playlist</p>
                 </a>
@@ -150,17 +156,20 @@
             </div>
 
             <div class="card-container">
-                <a href="images/viagem1.jpg" target="_blank" rel="noopener noreferrer" class="card">
+                <a href="images/viagem1.jpg" class="card" data-image="images/viagem1.jpg"
+                    data-caption="Aquela viagem para a praia">
                     <img src="images/viagem1.jpg" alt="Viagem 1">
                     <p>Aquela viagem para a praia</p>
                 </a>
 
-                <a href="images/passeio1.jpg" target="_blank" rel="noopener noreferrer" class="card">
+                <a href="images/passeio1.jpg" class="card" data-image="images/passeio1.jpg"
+                    data-caption="Rolê aleatório que virou história">
                     <img src="images/passeio1.jpg" alt="Passeio 1">
                     <p>Rolê aleatório que virou história</p>
                 </a>
 
-                <a href="images/aventura3.jpg" target="_blank" rel="noopener noreferrer" class="card">
+                <a href="images/aventura3.jpg" class="card" data-image="images/aventura3.jpg"
+                    data-caption="Missão secreta: preparar a surpresa">
                     <img src="images/aventura3.jpg" alt="Passeio 2">
                     <p>Missão secreta: preparar a surpresa</p>
                 </a>
@@ -205,9 +214,118 @@
         </section>
     </main>
 
+    <div class="image-modal" id="image-modal" aria-hidden="true">
+        <div class="image-modal__overlay" data-close-modal></div>
+        <div class="image-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="image-modal-caption">
+            <button class="image-modal__close" type="button" aria-label="Fechar modal">&times;</button>
+            <button class="image-modal__nav image-modal__nav--prev" type="button" aria-label="Ver foto anterior">
+                &#10094;
+            </button>
+            <button class="image-modal__nav image-modal__nav--next" type="button" aria-label="Ver próxima foto">
+                &#10095;
+            </button>
+            <img src="" alt="" class="image-modal__image">
+            <p class="image-modal__caption" id="image-modal-caption"></p>
+        </div>
+    </div>
     <footer>
-        <p>Feito com ❤️ para minha gatinha 😻 <br><br> <b>LOVEFLIX+</b> Originals</p>
+        <p>Feito com ❤️ para minha gatinha 💕 <br><br> <b>LOVEFLIX+</b> Originals</p>
     </footer>
+
+    <script>
+        (function () {
+            const modal = document.getElementById('image-modal');
+            if (!modal) return;
+
+            const modalImage = modal.querySelector('.image-modal__image');
+            const modalCaption = modal.querySelector('.image-modal__caption');
+            const closeButton = modal.querySelector('.image-modal__close');
+            const overlay = modal.querySelector('.image-modal__overlay');
+            const prevButton = modal.querySelector('.image-modal__nav--prev');
+            const nextButton = modal.querySelector('.image-modal__nav--next');
+            const cards = Array.from(document.querySelectorAll('.card[data-image]'));
+            let lastFocusedElement = null;
+            let currentIndex = -1;
+
+            const updateImage = (index) => {
+                const card = cards[index];
+                if (!card) return;
+                currentIndex = index;
+                const { image, caption } = card.dataset;
+                const altText = card.querySelector('img')?.alt || caption || '';
+                modalImage.src = image;
+                modalImage.alt = altText;
+                modalCaption.textContent = caption || '';
+            };
+
+            const openModalAt = (index) => {
+                if (!cards.length) return;
+                lastFocusedElement = document.activeElement;
+                modal.setAttribute('data-open', 'true');
+                modal.removeAttribute('aria-hidden');
+                document.body.classList.add('modal-open');
+                updateImage(index);
+                closeButton.focus();
+            };
+
+            const closeModal = () => {
+                modal.setAttribute('aria-hidden', 'true');
+                modal.removeAttribute('data-open');
+                modalImage.removeAttribute('src');
+                document.body.classList.remove('modal-open');
+                currentIndex = -1;
+                if (lastFocusedElement) {
+                    lastFocusedElement.focus();
+                }
+            };
+
+            const changeImage = (step) => {
+                if (currentIndex === -1 || !cards.length) return;
+                const newIndex = (currentIndex + step + cards.length) % cards.length;
+                updateImage(newIndex);
+            };
+
+            cards.forEach((trigger, index) => {
+                trigger.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    openModalAt(index);
+                });
+            });
+
+            [closeButton, overlay].forEach((el) => {
+                el?.addEventListener('click', closeModal);
+            });
+
+            prevButton?.addEventListener('click', () => changeImage(-1));
+            nextButton?.addEventListener('click', () => changeImage(1));
+
+            modal.addEventListener('click', (event) => {
+                if (event.target === modal) {
+                    closeModal();
+                }
+            });
+
+            document.addEventListener('keydown', (event) => {
+                const isOpen = modal.getAttribute('data-open') === 'true';
+                if (!isOpen) return;
+                if (event.key === 'Escape') {
+                    closeModal();
+                } else if (event.key === 'ArrowLeft') {
+                    event.preventDefault();
+                    changeImage(-1);
+                } else if (event.key === 'ArrowRight') {
+                    event.preventDefault();
+                    changeImage(1);
+                }
+            });
+        })();
+    </script>
 </body>
 
 </html>
+
+
+
+
+
+
